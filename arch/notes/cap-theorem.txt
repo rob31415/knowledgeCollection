@@ -1,0 +1,22 @@
+cap theorem
+
+
+wie wirkt es sich praktisch aus, wenn eines der drei konzepte fehlt?
+
+
+Consistency: wenn sie fehlt, haben nicht alle rechner immer die selben daten.
+
+Availability: wenn sie fehlt, ist die db nicht erreichbar, der benutzer muss warten.
+
+Partition Tolerance: man benötigt sie nicht, wenn man nur einen rechner hat, auf dem die unzerteilte, gesamte db liegt (auch wenn diese db evtl. noch 1:1 auf andere rechner repliziert wird). man könnte sagen, wenn sie fehlt, hat man eigentlich lediglich einen rechner mit einer db.
+
+
+sobald man zum zweck der performancesteigerung durch parallelisierung eine db zerteilt und diese einzelnen teile "dynamisch" (dh, entsprechend der auslastung der rechner) auf verschiedene rechner verteilt, benötigt man partition tolerance (im sinne des cap-theorems).
+partitionierung entsteht durch verbindungsausfall zwischen zwei rechnern.
+man kann diese partitionierung auf zwei wechselseitig ausschliessliche arten tolerieren: AP oder CP.
+
+CA bedeutet keine parallelisierung einer db.
+
+AP oder CP sind neuere ideen und sie können ausser der wesentlichen geschwindigkeitssteigerung auch noch andere vorteile haben gegenüber CA (zb vorteile konzeptioneller natur). dh. man könnte sich schon für nosql entscheiden, auch wenn man nicht vorhat, zu parallelisieren, man ignoriert dadurch aber einen wesentliches argument für die benutzung von nosql.
+
+

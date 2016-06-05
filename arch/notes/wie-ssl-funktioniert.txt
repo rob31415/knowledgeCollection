@@ -1,0 +1,80 @@
+titel: kontemporäre kryptographie am beispiel von ssl
+autor: rob
+stand: 5.10.13
+
+diese zusammenfassung basiert auf: "die papiere, bitte", jörg bartholdt, erschienen in ix1202 (heise verlag), seite 160 ff.
+
+
+begriffe
+
+  zertifikat (pem oder der encoding)
+    bindet distinguished name (DN) an PK.
+    ein zertifikat ist vertrauenswürdig, wenn man einer ca glaubt, welche sagt, dass ein bestimmter DN zu einem bestimmten PK gehört.
+
+
+  trust store (pkcs#12/.p12 oder java key store .jks)
+    enthält vertrauenswürdige zertifikate
+
+
+  key store (java key store .jks)
+    enthält eigene identität - also SK und zertifikat
+
+
+  certification authority (ca)
+    stellt zertifikate aus
+
+
+  root-ca
+    signiert sich selbst
+
+
+
+anwendungen
+
+  mit PK verschlüsseln (wenn A möchte, dass nur B eine nachricht lesen kann):
+
+    verschlüsseln
+      <verschlüsselter text> = PK(<text>)
+
+    entschlüsseln
+      <text> = SK(<verschlüsselter text>)
+
+    also: SK(PK(<text>)) = <text>
+
+
+
+  mit SK verschlüsseln (da heisst das ver-/entschlüsseln dann...):
+
+    signieren
+      <signierter text> = SK(<text>)
+
+    verifizieren
+      text = PK(<signierter text>)
+
+    also: PK(SK(<text>)) = <text>
+
+
+
+  wozu signieren?
+    voraussetzung zum verifizieren, was wiederum voraussetzung für challenge response ist.
+    A will wissen, ob B den zugehörigen SK zu einem PK besitzt 
+
+    das fkt mit challenge response:
+  
+      A generiert zufallszahl ZF
+      A schickt ZF an B
+      B signiert ZF (signieren heisst, verschlüselung mit mit SK)
+      B schickt ZF-signiert zu A
+      A verifziert: PK(<ZF-signiert>) == ZF
+
+
+  A will wissen, ob ein PK zu B gehört a.k.a. authentifizieren:
+
+    A sucht im trust store nach dem zertifikat von B.
+    wenn gefunden, oder wenn CA(cert-B) im trust store von A enthalten ist: ok.
+
+    wenn z.b. A ein client und B ein server ist, kann natürlich B auch A auf die selbe weise verifizieren und authentisieren.
+
+  zusammenfassung:
+
+    also - zuerst verifizieren (ok, du hast den passenden SK zu dem PK den ich angeblich von dir habe) und dann authentifizieren (ok, der PK passt tatsächlich auch zu der angesprochenen url/server).

@@ -1,0 +1,101 @@
+
+here's how to count the number of combinatorial objects.
+
+
+permutations (ordered) aka n-permutation; arrange
+_______________________________________________________
+
+									without repetition
+
+"all arrangements of 3 letters"
+
+Pn = n!
+ n
+
+|abc bca cab|
+|acb bac cha|
+
+
+									with repetition
+
+"all arrangements of 4 letters in a 2 letter alphabet"
+
+n! / k1! * ... * ks!
+4! / (2!*2!) = 6  (each letter fills 2 slots)
+
+|aabb abab abba|
+|baab baba bbaa|
+
+another example:
+"4 letters in a 3 letter alphabet (e.g. 2 a's, 1*b, 1*c)"
+4! / (2! * 1! * 1!) = 12
+
+
+
+variations (ordered) aka k-permutation; arrange and pick
+_______________________________________________________
+
+									without repetition
+
+"# words with 2 different letters from 4 letters"
+="two slots, 4 candidates"
+
+Vn = n! / (n-p)!    "p of n"; p=2 n=4; "2 of 4"
+ p
+
+|-- ab ac ad|
+|ba -- bc bd|
+|ca cb -- cd|
+|da db dc --|
+
+
+									with repetition
+
+"2 letter words (p) from 4 letters (n)"
+
+abs(Vn) = n^p
+     p
+
+abs(V4) = 16
+     2
+
+
+
+combinations (unordered) aka k-combination; pick
+_______________________________________________________
+
+									without repetition
+
+"pick 2 different out of 4" / "n choose p"
+
+Cn = n! / (p! (n-p)!)		(binomial coefficient; pascal's triangle)
+ p
+
+C4 = 6
+ 2
+
+|-- ab ac ad|
+|-- -- bc bd|
+|-- -- -- cd|
+|-- -- -- --|
+
+
+									with repetition
+
+"pick 2 out of 4" aka "2 multicombination"
+note: in the source-set (here 4 objects), there are no duplicates
+
+abs(Cn) = C n+p-1
+     p      p
+
+abs(C4) = C5 = 10
+     2     2
+
+|aa ab ac ad|
+|-- bb bc bd|
+|-- -- cc cd|
+|-- -- -- dd|
+
+if source-set contains duplicates it's called
+"combinations of n multiset" (multiset=set containing any element more than once)
+

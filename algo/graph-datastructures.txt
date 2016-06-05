@@ -1,0 +1,95 @@
+take for example this directed graph:
+
+a --e3--> c --e4--> d
+^        ^^        /
+|e1     /  \--e5--/
+|      /e2
+b ----/
+
+
+adjacency list
+
+a: b
+b: a,c
+c: d
+d: c
+
+
+edge list
+
+(b,a), (b,c), (a,c), (c,d), (d,c)
+
+
+adjacency matrix
+
+  a b c d
+a 0 0 1 0 <-- sum(node a outgoing edges)
+b 1 0 1 0
+c 0 0 0 1
+d 0 0 1 0
+  ^
+  sum(node a incoming edges)
+
+
+incident matrix (-1 incoming edge, 1 outgoing edge)
+  
+  e1 e2 e3 e4 e5
+a -1  0  1  0  0
+b  1  1  0  0  0
+c  0 -1 -1  1 -1
+d  0  0  0 -1  1
+
+
+
+a similar graph, but undirected:
+
+a --e3--- c --e4--- d
+|        /\        /
+|e1   e2/  \--e5--/
+|      /
+b ----/
+
+
+adjacency list
+
+a: b,c
+b: a,c
+c: a,b,d
+d: c, c
+
+
+edge list
+
+(a,b), (b,c), (a,c), (c,d), (c,d)
+
+
+adjacency matrix
+
+  a b c d
+a 0 1 1 0
+b 1 0 1 0
+c 1 1 0 1
+d 0 0 1 0
+
+
+incident matrix (-1 incoming edge, 1 outgoing edge)
+  
+  e1 e2 e3 e4 e5
+a  1  0  1  0  0
+b  1  1  0  0  0
+c  0  1  1  1  1
+d  0  0  0  1  1
+
+
+note that: nodes - edges + faces = 2
+
+which datastructure to use in practice?
+
+faster test (x,y in graph)	adjacency matrix
+faster find degree			adjacency list
+less mem on small graphs	adjacency list (m+n) vs n^2
+less mem on big graphs		adjacency matrix (small win)
+edge ins/del				adjacency matrix O(1) vs O(d)
+faster to traverse graph 	adjacency list
+better for most problems 	adjacency list
+

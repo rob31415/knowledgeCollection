@@ -1,0 +1,161 @@
+alternatives to callbacks:
+1) combining for-comprehensions and futures in scala
+2) get rid of callbacks in js with flapjax
+
+
+autor: rob
+date: nov 2014
+
+
+
+1) combining for-comprehensions and futures in scala
+
+
+if i follow the rules of good callback-coding (keep it shallow and avoid anonymous functions), i still don't see clearly, what follows what.
+
+trivial node.js example
+
+function submitForm(...) {
+  request({...}, responseOfPostMethod)
+}
+
+function responseOfPostMethod(...) {...}
+
+ok, so responseOfPostMethod obviously is called from inside request after a while.
+
+but if i want to chain together more async. steps to a non trivial construct, like, in a uml-activity-diagram kind of way, the forks/joins are not explicitly expressed, they become deeply nested. ok, the sequence emerges somehow, yes, but they're buried between handling code.
+
+
+scala offers a nice approach for this.
+one can combine two lang-features, namely futures and for-comprehensions.
+
+for comprehensions
+
+they trace back to ideas in functional langs. here i refer to so called monads, which are, oversimplyfied, just another, albeit high-brow, instance of the age-old idea: let's chain together things, that take input from the predecessor and produce output, to be consumed by the successor. let's formalize the components and their in- and outputs to such a degree that they become chainable in the first place.
+
+
+"Scala's 'for comprehensions' are syntactic sugar for composition of multiple operations with foreach, map, flatMap, filter or withFilter."
+(from http://docs.scala-lang.org/tutorials/FAQ/yield.html)
+
+
+scala repl example:
+
+scala> for (i <- 1 to 5) yield i
+res10: scala.collection.immutable.IndexedSeq[Int] = Vector(1, 2, 3, 4, 5)
+
+
+yield in scala
+
+"For each iteration of your for loop, yield generates a value which will be remembered. It's like the for loop has a buffer you can't see, and for each iteration of your for loop, another item is added to that buffer. When your for loop finishes running, it will return this collection of all the yielded values. The type of the collection that is returned is the same type that you were iterating over, so a Map yields a Map, a List yields a List, and so on.
+Also, note that the initial collection is not changed; the for/yield construct creates a new collection according to the algorithm you specify."
+(from http://alvinalexander.com/scala/scala-for-loop-yield-examples-yield-tutorial)
+
+
+future
+
+a future is a block of code that is executed asynchronously in another thread. it can't be terminated from the outside, it runs until it ends. that's just it - no message-q or anything complicated about it.
+
+
+so, now you should be able to understand clearly what's going on, just by reading the following code.
+
+//declarations
+def grind(beans) = future {...}
+
+def heatWater(time) = future {...}
+
+def frothMilk(milk) = future {...}
+
+def brew(coffee, heatedWater) = future {...}
+
+def combine (espresso, foam) = {...}
+
+def prepareCappuccino() = {
+  val groundCoffee = grind("arabica beans")	//definitions
+  val heatedWater = heatWater(20)
+  val frothedMilk = frothMilk("milk")
+  for {
+    ground <- groundCoffee	//executions, if possible, parallel
+    water <- heatedWater
+    foam <- frothedMilk
+    espresso <- brew(ground, water)
+  } yield combine(espresso, foam)
+}
+
+(from http://danielwestheide.com/blog/2013/01/09/the-neophytes-guide-to-scala-part-8-welcome-to-the-future.html)
+
+this is what you see clearly in the code:
+
+grinding, heating and frothing can be done simultaneously.
+you can only brew espresso, after the beans are ground and the water is heated.
+the cappucino can be made, only after both, espresso is brewed and milk is frothed.
+
+
+just express the dependencies declaratively and let the lang take care of any concurrency stuff. no callbacks. neat huh?
+
+
+
+2) get rid of callbacks in js with flapjax
+
+flapjax lets you avoid callbacks and express things declaratively.
+
+behaviour and event stream
+
+"Flapjax is JavaScript augmented with two new
+kinds of data.
+
+A behavior is like a variable - it always has a value - except that changes to its value propagate automatically;
+
+an event stream is a potentially infinite stream of discrete events whose new events trigger additional computation.
+
+The propagation of updated behavior values and new events is the responsibility of the language."
+
+(from the paper)
+
+
+let's see some code:
+
+
+var nowB = timerB(1000);
+var startTm = nowB.valueNow();
+var clickTmsB = $E("reset", "click").snapshotE(nowB).startsWith(startTm);
+var elapsedB = nowB - clickTmsB;
+
+insertValueB(elapsedB, "curTime", "innerHTML");
+
+<body onload="loader()">
+	<input id="reset" type="button" value="Reset"/>
+	<div id="curTime"> </div>
+</body>
+
+(from the paper)
+
+
+
+what's going on here?
+
+nowB: creates behaviour that updates every sec.
+
+startTm: snapshot of value at invocation time
+
+$E("reset", "click"): creates eventstream (of dom event objects) from clicks on a "reset"-named button
+
+snapshotE(nowB): gets the event from the eventstream at time nowB
+
+startsWith(startTm): converts the event into a behavior. clickTmsB is initialised with startTm.
+
+clickTmsB: either the time at which user has clicked reset button (as a behaviour) or startTm.
+
+elapsedB: calculates time between now and when user has clicked the button. it's automatically evaluated by flapjax if nowB or clickTmsB is changing.
+
+insertValueB(elapsedB, "curTime", "innerHTML"): puts value of "elapsedB" into the innerHTML of an html-element with id "curTime"
+
+
+so, in short, the program shows every second the number of passed seconds since either the reset button was clicked or the page was loaded (in case the button was never clicked).
+
+
+"Software engineering textbooks love to tell you how you must use Model-View-Controller (MVC), which is a useful but heavy-weight way to think about structuring an application. Flapjax gives you MVC, but with a twist. You want to think of the server as holding the model, and the client as implementing the view. The controller is the annoying part: updating values, distributing updates, propagating updates, and so forth. Flapjax is the glue that implements the controller for free. It's MVC without the bondage and discipline."
+
+(from http://www.flapjax-lang.org/tutorial/)
+
+
+no callback coding. declarative clarity. neat, huh?

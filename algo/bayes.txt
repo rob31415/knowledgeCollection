@@ -1,0 +1,21 @@
+
+P(A and B) = P(B and A)
+
+this only works, if A and B occur independent of one another:
+P(A) P(B) = P(A and B)
+
+P(B|A) means: "probability, that B occurs when A has already occured"
+
+if A and B occur in dependence of one another:
+P(A and B) = P(B|A) P(A)
+P(B and A) = P(A|B) P(B)
+P(B|A) P(A) = P(A|B) P(B)
+P(A|B) = ( P(B|A) P(A) ) / P(B)
+
+this is called the "diachromatic interpretation of bayes' theorem".
+
+posterior = (prior * likelyhood) / normalizing constant
+P(H|D)    = ( P(H)      P(D|H) ) / P(D)
+
+H = hypothesis
+D = data
