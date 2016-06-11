@@ -5,10 +5,25 @@ factorial
 (n+1+1) = (n+1)! * (n+1+1)
 (n+2)!  = (n+1)! * (n+2)
 
+
 logarithm
 
 b^x = y  <--> x = log b y
 log a n^b = b * log a n
 log a (xy) = log a x + log a y
 log a b = log c b / log c a
+
+
+summation (capital sigma symbol: ∑) is the addition of a sequence of numbers; the result is their sum or total.
+
+e.g.
+
+n = 8
+
+  sum[i=1 to n] i 
+= 1+8 + 2+7 + 3+6 + 4+5
+=  9  +  9  +  9  +  9
+= 4 * 9 
+= 8/2 * 9
+= n/2 * (n+1)
 

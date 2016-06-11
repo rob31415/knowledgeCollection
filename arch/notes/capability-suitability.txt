@@ -1,0 +1,11 @@
+
+gary bernhardt suggests: capability & suitability
+
+capability: power of a sw-system to express an idea (say more things)
+suitability: ability to actually build a reliable system (say things you already can say, but more reliably, more unambiguously)
+
+there's a cycle of creating more capable systems (i.e. new languages, features, frameworks, ways of thinking), followed by constraining possibilities/giving up flexibility to make it suitable for actually creating something new reliably and efficiently (i.e. sensible defaults, coding styles, best practices).
+
+e.g. c++ is a capability response to c, java is a suitability response to c++.
+
+capability systems tend to have a "culture of brokenness".

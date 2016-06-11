@@ -1,0 +1,64 @@
+these are the suffixes of "abacab":
+
+012345
+abacab 0
+ bacab 1
+  acab 2
+   cab 3
+    ab 4
+     b 5
+
+the numbers are the 0-based positions of the suffixes.
+
+
+this is the corresponding suffix trie:
+
+           [root]
+       /      |   \
+      / a     |    \
+     /        | b   \ c
+    []        |     |
+  /    \     [5]    []
+ /      \     |     |
+ |b     |c    | a   | a
+ |      |     |     |
+[4]     []    []    []
+ |      |     |     |
+ |a     |a    | c   | b
+ |      |     |     |
+[]     []     []    [3]
+ |      |     |
+ |c     |b    | a
+ |      |     |
+[]     [2]    []
+ |            |
+ |a           | b
+ |            |
+[]           [1]
+ |
+ |b
+ |
+[0]
+
+the idea is, thinking of the single elements as attached to the path between parent and child node.
+every element leading out from a node could be stored in that very node.
+
+note that terminal symbols can be introduced:
+every node with a number - and root - branches off another node which contains a terminal symbol.
+
+contracting/collapsiong a branch and creating a branch for each node which contains a number
+yields a suffix tree:
+
+
+              root
+            /    | \   \
+         /       |  \     \
+      /          |   \       \
+    a            b   bacab   cab
+  / |  \         |     |      |
+ /  |   \        |     |      |
+/   |    \       5     1      3
+b  bacab  cab
+|   |      |
+4   0      2
+

@@ -1,0 +1,8 @@
+
+uncle bob suggests:
+
+All Our Programming Languages Boil Down to 
+Sequence, 
+Selection and 
+Iteration.
+

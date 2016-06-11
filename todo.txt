@@ -6,9 +6,15 @@ systems of linear equations
 binary search tree (nodes, as array)
 prioQ/heap (nodes, as array)
 hashing (rolling)
-suffix tree / suffix array
+suffix trie / suffix tree / suffix array
 
-sorting: insert, select, heap, merge, quick, bubble, shell, comb, counting, bucket, radix
+keyword in context search
+binary search upper/lower bound
+longest common substring
+long repeated substring: brute force (check all pairs), suffix sorting with insertion sort, s.s.w. mergesort, ssw index sort
+
+
+sorting: insert, select, heap, merge, quick, bubble, shell, comb, counting, bucket, radix, index, 3-way-string quicksort
 
 count and generate combinatorial objects: permute, subset
 
