@@ -9,17 +9,20 @@
 
 # collections
 
-# unordered
+# unordered. for expressing relationships, linking, counting, grouping
 aDictionary = {"Beer" : "Bofferding", "Schnapps" : "Bärwurz", 4 : "four"}
 print(aDictionary)	#{4: 'four', 'Beer': 'Bofferding', 'Schnapps': 'B\xc3\xa4rwurz'}
 print(aDictionary["Schnapps"])	#Bärwurz
+# keys of different types are possible, but it's problematic
+# e.g. when iterating
 
 aDictionaryEmpty = {}
 aDictionaryEmpty2 = dict()
 aDictionaryEmpty["H2O"] = "Vodka"
 del aDictionaryEmpty["H2O"]
 
-# default dict
+# defaultdict: acts like dict.getOrElse(key, defaultValue)
+# meaning: give me element with key and if it doesn't exist, create it with given defaultValue and return it
 from collections import defaultdict
 def someDefaultValue():
 	return 0
@@ -52,6 +55,15 @@ print(aSet)
 aSetEmpty = set()	#there isn't a literal for empty set
 
 
+# don't mutate while iterating. instead do this - .keys() makes a copy
+for k in aDictionary.keys():
+	if(type(k) == "int"):
+		del aDictionary[k]
+
+# .iteritems() is faster than .items() because uses iterators
+for k,v in aDictionary.items():
+	print(k,v)
+
 
 # comprehensions (for lists, maps, sets)
 def doSomething(x):
@@ -65,7 +77,7 @@ for e in aList:		#iteration can be...
 # but comprehensions really are for creating a new collection from a given collection
 x = [doSomething(e) for e in aList]
 
-# btw: pythons for is like foreach in javascript. it loops over collections using the iterator protocol.
+# btw: pythons for is like foreach in javascript/C#. it loops over collections using the iterator protocol.
 
 
 #range(100000) #in pyton2, creates a datastructure with 100000 elements
@@ -78,6 +90,7 @@ x = [doSomething(e) for e in aList]
 for i in reversed(range(10)):
 	print(i)
 # 9 8 7 ... 0
+
 
 
 # enumerate() adds an index to for loops
@@ -99,6 +112,12 @@ for i in sorted(anotherList, reverse=True):
 #c b a
 
 
+# construct dict from 2 lists 
+# (izip  reuses tuple, saves space and speed)
+print( dict(zip(["key1", "key2", "key3"], ["val1", "val2", "val3"])) )
+
+
+
 # when sorting, instead of compare-functions you can use "key" parameter.
 # it specifies a function to be called on each list element prior to making comparisons
 # it's like sql's "order by"
@@ -117,6 +136,31 @@ for i in sorted(persons, key=lambda person: person[2]):
 #
 # e.g. key=len would sort ["abc", "a", "ab"] to: a ab abc.
 
+# iterate unless a sentinel value appears
+
+i=0
+def blablabla():
+	global i
+	i += 1
+	return i
+
+blocks = []
+for block in iter(blablabla,5):
+	blocks.append(block)
+print(blocks)
+
+
+# multipleLoopExitPoints; 2 possible outcomes (idea by knuth)
+
+def containsACertainValue():
+	for val in [1,2,3,4,5]:
+		if(val==777):
+			break
+	else:	#ran to the end; didn't break; could've be called "nobreak" or "didn't break"
+		return False
+	return True
+
+print(containsACertainValue())
 
 # conditional expression (instead of ternary operator)
 
@@ -138,7 +182,7 @@ aRef[0] = 2
 print(anotherRef[0])	# 2
 
 
-# lambda and the three seminal functional built ins
+# lambda (anonymous fct) and the three seminal functional built ins
 
 lst = range(1, 7)
 print(lst)	#[1, 2, 3, 4, 5, 6]
@@ -229,6 +273,10 @@ he = Person(name="Bob", age=30, gender="male")
 she = Person("Drea", 28, "female")
 print("her name is {0}".format(she.name))
 
+# use named tuples to clarify return values (pendant to keyword args)!
+print(he, she)
+# Person(name='Bob', age=30, gender='male')
+# Person(name='Drea', age=28, gender='female')
 
 # named and optional function args
 
@@ -286,6 +334,8 @@ class aDecorator:
 def someDecoratedFunction():
 	print("bla")
 
+# decorators can be used to seperate administrative logic from business logic.
+# e.g.: looking up an url (business log.) and memoizing/caching it with a dict (administrative logic).
 
 # closure
 
@@ -337,7 +387,97 @@ for b in genexp:
 # coroutines
 
 
+# grouping
+# create a dict from a list, where the key is what's being grouped by and the value is a list of elements from the source.
+
+toBeProcessed = ["Hans", "Liz", "Rob", "Frankly", "Bubbele", "Hans"]
+grouped = {}
+for el in toBeProcessed:
+	key = len(el)
+	if(key in grouped):			# can of course be simplified, but readability counts
+		grouped[key].append(el)
+	else:
+		grouped[key] = []
+		grouped[key].append(el)
+print(grouped)
+
+# grouping II
+
+grouped = defaultdict(list)
+for el in toBeProcessed:
+	key = len(el)
+	grouped[key].append(el)	# if its not there, create&return an empty list
+print(grouped)
+# if grouped were a normal dict, this is equivalent:
+# grouped.setdefault(key, []).append(el)
+
 # itertools groupby
+
+# counting is similar to grouping - instead of append, a counter is increased
+
+# counting I
+
+count = {}
+for el in toBeProcessed:
+	count[el] = count.get(el,0) + 1
+print(count)
+
+# counting II
+
+count = defaultdict(int)	# "int" evaluates to 0
+for el in toBeProcessed:
+	count[el] += 1
+print(count)
+
+while grouped:
+	key, value = grouped.popitem()	# popitem is atomic (threadsafe)
+	print(key, value)
+print(grouped)	#empty
+
+# linking dicts
+
+# I: using dict.copy(first) and dict.update(second)
+
+# II
+
+first =  {"key1":"val1", "key2":"val2"}
+second = {"key1":"bla", "key3":"val3"}
+# print(ChainMap(first,second)) # python > 3.3
+
+
+# keyword args > positional args, use them whenever you can!
+
+def someFunction(arg1, arg2, arg3):
+	print(arg2)
+someFunction(arg3="a", arg1=False, arg2="cool")
+
+# sequence unpacking
+
+p = "A", "Hello", 0x10, 4.5
+a, b, c, d = p 		# forget about []
+
+# update multiple vars at once
+# no dangerous out-of-order updates
+
+a, b, c = 3, "hello", 4.3
+
+# concatenate strings
+print("A" + "B") 	 # is slow.
+print("A".join("B")) # is fast. (python > 3.2)
+
+
+# doing inserts or pops from the beginning of a list is slow (because all of the other elements have to be shifted by one)
+# don't do:
+# del l[0]
+# l.pop(0)
+# l.insert(0, "bla")
+#
+# instead use the far more efficient:
+import collections
+deq = collections.deque([2, "hi", 5, "bueno"])
+del deq[0]
+deq.popleft()
+deq.appendleft("bla")
 
 
 # itertools combi/permu
@@ -360,7 +500,11 @@ for b in genexp:
 # pull out setup and teardown with context managers
 
 # context managers
+# c++ has Resource Acquisition Is Initialization (RAII)
 
+#import contextlib
+#@contextlib.contextmanager
+#def aMgr
 
 # dis.dis(x)
 

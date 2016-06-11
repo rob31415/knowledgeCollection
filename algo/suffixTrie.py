@@ -27,4 +27,37 @@ def buildTrie(aString):
 			cur = cur[c]
 	return root
 
-buildTrie("hallo")
+buildTrie("abacab")
+
+
+#{
+#	'a': {
+#		'c': {
+#			'a': {'b': {}}
+#		},
+#		'b': {
+#			'a': {
+#				'c': {
+#					'a': {'b': {}}
+#				}
+#			}
+#		}
+#	},
+#	'c': {
+#		'a': {
+#			'b': {}
+#		}
+#	},
+#    'b': {'a': 
+#    	{
+#    		'c': {
+#    			'a': {'b': {}}
+#    		}
+#    	}
+#    }
+#}
+#
+#
+
+
+
