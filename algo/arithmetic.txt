@@ -1,0 +1,14 @@
+
+factorial
+
+(x+1)!  = x! * (x+1)
+(n+1+1) = (n+1)! * (n+1+1)
+(n+2)!  = (n+1)! * (n+2)
+
+logarithm
+
+b^x = y  <--> x = log b y
+log a n^b = b * log a n
+log a (xy) = log a x + log a y
+log a b = log c b / log c a
+

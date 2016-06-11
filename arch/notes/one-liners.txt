@@ -1,0 +1,29 @@
+
+rule 1) don't put too much on one line
+rule 2) don't break atomic thoughts into subatomic particles
+
+those rules conflict.
+
+a suggestion by r. hettinger:
+one line of code = one sentence in english
+
+
+an example in python:
+
+result = []
+for i in range(10):
+	s = i ** 2
+	result.append(s)
+print(sum(result))
+
+this tells HOW to do it, step by step.
+it violates rule 2).
+
+
+print( sum(i ** 2 for i in range(10)) )
+
+this tells WHAT to do.
+it's equivalent to a sentece in english.
+in this case, it can even be read from left to right:
+"print the sum of squared numbers, over all the numbers from 0 to 9."
+
