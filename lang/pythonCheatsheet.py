@@ -204,10 +204,23 @@ def bla2(x,y):
 
 import functools
 # all equivalent, all give 21
-print(functools.reduce(lambda x,y: x+y, lst))	# redude does this: (((((1+2)+3)+4)+5)+6) thus aka "left-fold"
+print(functools.reduce(lambda x,y: x+y, lst))	# reduce does this: (((((1+2)+3)+4)+5)+6) thus aka "left-fold"
 print(functools.reduce(bla, lst))
 print(functools.reduce(bla2, lst))
 # guido says: "the only purpose of reduce is to write really obfuscated code that shows how cool you are"
+
+
+# map/reduce one liner
+
+print( functools.reduce(lambda x, y: x+y, map(lambda x:len(x), [ [1,2], [1,4,9], [4,4,4,4] ])) )
+# the map-part gives [2,3,4] and eventually this prints "9"
+
+# in a full-blown map/reduce framework, the map-part is being parallellized.
+# as a result there's intermediate results (here e.g. 2, 3 and 4 - the length of the three arrays).
+# a map/reduce framework will do the work of maintaining those intermediate results.
+# also, partitioning of the data to be mapped and 
+# a user of a map/reduce framework typically provides the map and the reduce function.
+
 
 # iterate over lst, apply lamda to each single element, create new list from lamda retval
 print(map(lambda x: x*2, lst))	#[2, 4, 6, 8, 10, 12]
@@ -264,7 +277,7 @@ class Props(object):
 props = Props()
 print(props.x)	#0
 
-# named tuples
+# named tuples (attention! they're immutable)
 
 from collections import namedtuple
 Person = namedtuple("Person", "name age gender")
@@ -479,6 +492,12 @@ del deq[0]
 deq.popleft()
 deq.appendleft("bla")
 
+# c struct packing
+# this creates a requested c datatype
+from struct import pack, unpack
+data = pack('IIf', 2, 4, 20.3)
+a,b,c = unpack('IIf', data)
+print(a, b, c)
 
 # itertools combi/permu
 
@@ -489,15 +508,17 @@ deq.appendleft("bla")
 # classes, scope, constructor, polymorphism, inheritance
 
 
-# large scale structuring: namespaces, packages
+# large scale structuring: namespaces, packages, pip, virtual environments 
+# TODO: explain that very concise
 
 
-# multithreading
+# threading, GIL and multiprocessing
 
 # alternative to visitor pattern of OO-strong langs, with python you can
 # pull out loop body as a function (trivial)
 # pull out the loop iteration logic with generators
 # pull out setup and teardown with context managers
+# TODO: explain with code example
 
 # context managers
 # c++ has Resource Acquisition Is Initialization (RAII)
@@ -510,6 +531,16 @@ deq.appendleft("bla")
 
 
 # python versions and ecosystem/packagemanager
+
+# import looks:
+# 1st) in the same directory than the file that does "import tktable"
+# 2nd) in an evironment variable named "PYTHONPATH" if it exists
+# 3rd) in the "installation-dependent default"
+
+# finding out "installation-dependent default":
+#import os, inspect
+#print(inspect.getfile(os))  # e.g. /usr/lib/python3.4/
+
 # libs and frameworks exploiting lang' features
 # http://python-3-patterns-idioms-test.readthedocs.org/en/latest/
 # webtamplating https://wiki.python.org/moin/Templating
