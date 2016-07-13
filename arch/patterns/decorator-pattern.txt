@@ -1,0 +1,18 @@
+there's 2 ideas.
+
+idea 1 is, an object X a) impersonates an object Y and b) also wraps Y.
+a) "is a" relationship; in OO langs that means inheritance
+b) "has a" relationship; in OO langs that means composition.
+
+class Decorator: public Widget
+{
+    Widget *w;
+    void draw();
+}
+
+then you do:
+new Decorator(new Widget())
+
+idea 2 is, because Decorator has the same method for an operation than Widget (e.g. draw), it delegates that operation to Widget and adds it's own functionality.
+hence the phrase "it decorates", like in "it puts something additionally onto/around it".
+draw() could have arguments and a returnvalue which can be modified by Decorator::draw() man-in-the-middle style.
