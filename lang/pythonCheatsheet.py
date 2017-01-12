@@ -16,6 +16,10 @@ print(aDictionary["Schnapps"])	#Bärwurz
 # keys of different types are possible, but it's problematic
 # e.g. when iterating
 
+# iterate dictionary
+for drink,brand in aDictionary.items():
+	print(drink, brand)
+
 aDictionaryEmpty = {}
 aDictionaryEmpty2 = dict()
 aDictionaryEmpty["H2O"] = "Vodka"
