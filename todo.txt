@@ -26,3 +26,40 @@ weighted graphs:
 monte carlo, local search, simulated annealing
 
 algos: Partition_problem, kd-trees, suffix trees, bin packing, Subset_sum_problem, Knapsack_problem, edit distance, Longest_common_subsequence_problem, count occurrences
+
+
+WEB STUFF:
+
+frameworks: Aurelia, VueJS, Knockout, Polymer, Meteor, React, jQuery, Angular, Angular4, PHP, Ember
+
+criteria: community/future, size, repaint speed, SOC, licencing
+
+features: for single page, mvc, routing, orm, form validation, pull-based/component based, push-based, templating, caching, sign up/on, authentication, authorization, scaffolding, url mapping, i18n, unit testing, webcomponent compatible, ecma version/js-dialect
+
+libs: corejs, lodash, handlebars, systemjs
+
+taskrunners: gulp, grunt, babble, transcript, linting
+
+ides: webstorm, vs code
+
+environment/deployment: docker, vagrant
+
+https://www.quora.com/profile/Pete-Hunt/Posts/Facebooks-React-vs-AngularJS-A-Closer-Look
+https://www.youtube.com/watch?v=gkbZ1LpWQB4
+https://www.youtube.com/watch?v=Xt5qpbiqw2g
+https://www.youtube.com/watch?v=6Fg3Aj9GzNw
+https://www.youtube.com/watch?v=GMWAHzXQnNM
+https://www.youtube.com/watch?v=2pL28CcEijU
+
+https://pouchdb.com/2015/05/18/we-have-a-problem-with-promises.html
+nodeschool.io
+
+
+learn
+
+- modern js, https://www.youtube.com/watch?v=U5SSASv_7ng
+- Elixir
+- Rust
+- Swift
+
+
