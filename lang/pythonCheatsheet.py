@@ -403,6 +403,41 @@ for b in genexp:
 
 # coroutines
 
+# they're different from subroutines (ordinary fct. calls), in that there is no 
+# coordinating instance (a superfunction calling many subroutines).
+# evaluation is lazy - similar to generators, they contain a loop and every single iteration is triggered from the outside.
+# coroutines are composed together to form a pipeline.
+
+def coroutineMatch(pattern):	# a consumer
+	try:
+		while True:
+			s = (yield)
+			if pattern in s:
+				print(s)
+	except GeneratorExit:
+		print("coroutineMatch closing")
+
+matcher = coroutineMatch("a")
+matcher.__next__()		# let execution reach (yield). quasi inits the coroutine.
+matcher.send("abc")		# "abc"
+matcher.send("def")		# no output
+matcher.close()			# "coroutineMatch closing"
+
+# compose coroutines
+
+def coroutineRead(text, nextCoroutine):	# a producer
+	nextCoroutine.__next__()
+	for line in text.split():
+		nextCoroutine.send(line)
+	nextCoroutine.close()
+
+# give the consumer to the producer
+reader = coroutineRead("a b c aa b c dea", coroutineMatch("a"))	# "a" "aa" "dea"
+
+# producer: has a send() call only.
+# filter: has both, (yield) and a send() call.
+# consumer: has a (yield) call only.
+
 
 # grouping
 # create a dict from a list, where the key is what's being grouped by and the value is a list of elements from the source.
