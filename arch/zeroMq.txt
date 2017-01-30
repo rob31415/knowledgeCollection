@@ -1,0 +1,110 @@
+
+ZeroMQ
+
+- apt-get install python-zmq
+- Data are called "message" and can be multipart (send in chunks, assembled upon reception).
+- ZeroMQ strings are length-specified and are sent on the wire without a trailing null
+- Nonblocking operation with a threaded queue.
+- Disconnected operation = doesn't matter who starts first or even, who binds and who connects - client or server.
+- Instead of hostname/port, URIs are used.
+
+
+transport types
+
+"tcp://hostname:port" for TCP networking
+"inproc://name" in-process/inter-thread comm. with the same code as TCP networking
+"ipc:///tmp/filename" UNIX domain sockets for ipc
+"pgm://interface:address:port"  multicast over IP (PUB/SUB only)
+"epgm://interface:address:port" multicast over UDP (PUB/SUB only)
+
+
+req/reply pattern
+
+REP receives and sends.
+REQ sends and receives.
+Either end can bind, and either end can connect.
+
+
+# SERVER
+
+import zmq
+context = zmq.Context.instance()
+
+sock = context.socket(zmq.REP)
+sock.connect('tcp://localhost:8080')
+
+while True:
+    message = sock.recv()
+    print(message)
+    sock.send_string("Yo")
+
+# CLIENT
+
+import zmq
+context = zmq.Context.instance()
+
+sock = context.socket(zmq.REQ)
+sock.bind('tcp://*:8080')
+
+sock.send_string("BLA")
+print(sock.recv())
+
+
+
+pub/sub pattern
+
+PUB sends msg with a subscription (a string prefix).
+SUB can connect to multiple PUBs and specify subscription for each.
+
+
+push/pull
+
+PUSH 
+PULL is a worker sending back data
+attention: no control over load balancing. 
+
+
+dealer/router
+
+DEALER is like an asynchronous REQ socket (we have to write the envelope ourselves)
+ROUTER is like an asynchronous REP socket (we have to manage the identities ourselves)
+
+gives us asynchronous clients talking to asynchronous servers, where both sides have full control over the message formats
+
+
+dealer/rep
+
+asynchronous client that can talk to multiple REP servers
+
+
+req/router
+
+asynchronous server that can talk to multiple REQ clients at the same time
+
+
+dealer/dealer
+
+worker can send back any number of replies
+
+
+router/router
+
+n-to-n connections
+
+
+pair/pair
+
+
+async Client/Server Pattern
+
+
+invalid: req/req, req/dealer, rep/rep, rep/router
+
+
+The Lazy Pirate pattern: reliable request-reply from the client side
+The Simple Pirate pattern: reliable request-reply using load balancing
+The Paranoid Pirate pattern: reliable request-reply with heartbeating
+The Majordomo pattern: service-oriented reliable queuing
+The Titanic pattern: disk-based/disconnected reliable queuing
+The Binary Star pattern: primary-backup server failover
+The Freelance pattern: brokerless reliable request-reply

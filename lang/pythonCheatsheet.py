@@ -435,7 +435,7 @@ def coroutineRead(text, nextCoroutine):	# a producer
 reader = coroutineRead("a b c aa b c dea", coroutineMatch("a"))	# "a" "aa" "dea"
 
 # producer: has a send() call only.
-# filter: has both, (yield) and a send() call.
+# filter: has both, (yield) and a send() call. can delete/modify data that's passing through.
 # consumer: has a (yield) call only.
 
 
