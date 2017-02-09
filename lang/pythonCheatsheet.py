@@ -268,7 +268,34 @@ print(type([]))	#list
 # ordererd / unordered collections
 
 
-# properties
+# name mangling: "__" prefix makes python interpreter rename the attribute
+
+class NameMangle(object):
+	__secret=1
+nameMangeExample=NameMangle()
+#print(nameMangeExample.__secret)	# AttributeError: 'NameMangle' object has no attribute '__secret'
+
+
+# properties (provide a built-in descriptor type that knows how to link an attribue to *a set of methods*)
+
+class Properties(object):
+	def __init__(self):		#constructor
+		self._my_secret = 1111
+	def _iGet(self):
+		return self._my_secret
+	def _iSet(self, value):
+		self._my_secret = value
+	def _iDelete(self):
+		print("nah")
+	myThing = property(_iGet, _iSet, _iDelete, "some docstring")
+properties = Properties()
+print(properties.myThing)	# 1111
+properties.myThing = 2222
+print(properties.myThing)   # 2222
+del properties.myThing	# nah
+#help(properties)  makes shell defined reader show
+
+# property shortcut
 
 class Props(object):
 	_x = 0
@@ -322,11 +349,20 @@ def namedVarargF(**args):
 namedVarargF(argone=1, another="two")	# prints "another two argone 1"
 
 
+# meta programming
+
 # old style classes vs. new style classes
+
+# new style bring the ability, to change classes and objects definitions at run time via __new__ and __metaclass__
+
+# __new__ vs __init__
 
 # https://www.python.org/download/releases/2.3/mro/
 
 # diamond inheritance and super != parent
+
+# method resolution order (C3 algo)
+
 
 
 # __call__ able objects
@@ -559,14 +595,18 @@ print(a, b, c)
 # pull out setup and teardown with context managers
 # TODO: explain with code example
 
+
 # context managers
 # c++ has Resource Acquisition Is Initialization (RAII)
 
-#import contextlib
-#@contextlib.contextmanager
-#def aMgr
+class SomeContexto(object):
+	def __enter__(self):
+		print("entering da zone")
+	def __exit__(self, exception_type, exception_value, exception_traceback):
+		print("leaving da zone")
 
-# dis.dis(x)
+with SomeContexto():
+	print("in da zone!")
 
 
 # python versions and ecosystem/packagemanager

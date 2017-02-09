@@ -95,6 +95,7 @@ n-to-n connections
 pair/pair
 
 
+best fit for in process/inter thread communication.
 async Client/Server Pattern
 
 
