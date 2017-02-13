@@ -81,6 +81,15 @@ for e in aList:		#iteration can be...
 # but comprehensions really are for creating a new collection from a given collection
 x = [doSomething(e) for e in aList]
 
+
+# tip:
+# you have: list of tuples 
+# you want: list of 1st element of every tuple
+# this is done with list comprehension:
+# [element[0] for element in listOfTuples]
+
+
+
 # btw: pythons for is like foreach in javascript/C#. it loops over collections using the iterator protocol.
 
 
@@ -276,6 +285,8 @@ nameMangeExample=NameMangle()
 #print(nameMangeExample.__secret)	# AttributeError: 'NameMangle' object has no attribute '__secret'
 
 
+# descriptor protocol
+
 # properties (provide a built-in descriptor type that knows how to link an attribue to *a set of methods*)
 
 class Properties(object):
@@ -349,11 +360,24 @@ def namedVarargF(**args):
 namedVarargF(argone=1, another="two")	# prints "another two argone 1"
 
 
-# meta programming
 
 # old style classes vs. new style classes
+#
+# <= python 2.1 has only old style classes
+# python3 has only new style classes (no matter if you subclass from object or not; although you should)
+#
+# "class x()"
+# old style: type(x) is always <type 'instance'>, x.__class__ designates the class
+# new style: type(x) == x.__class__
+#
+# new style classes:
+# - unify the concepts of class and type
+# - provide a unified object model with a full meta-model
+# - bring the ability, to change classes and objects definitions at run time via __new__ and __metaclass__
 
-# new style bring the ability, to change classes and objects definitions at run time via __new__ and __metaclass__
+
+# meta programming
+
 
 # __new__ vs __init__
 
@@ -375,7 +399,7 @@ aCallableObject = aCallable()
 aCallableObject()	# aCallable.__call__()
 
 
-# decorator
+# function decorator
 # modifies functions by passing them as argument to another function
 
 class aDecorator:
@@ -387,8 +411,16 @@ class aDecorator:
 def someDecoratedFunction():
 	print("bla")
 
+
+# class decorator
+
+
+
 # decorators can be used to seperate administrative logic from business logic.
 # e.g.: looking up an url (business log.) and memoizing/caching it with a dict (administrative logic).
+
+# instantiating descriptors and using class decorators as an alternate to mixins
+
 
 # closure
 
@@ -498,6 +530,8 @@ for el in toBeProcessed:
 print(grouped)
 # if grouped were a normal dict, this is equivalent:
 # grouped.setdefault(key, []).append(el)
+
+# iterator protocol
 
 # itertools groupby
 
@@ -612,7 +646,7 @@ with SomeContexto():
 # python versions and ecosystem/packagemanager
 
 # import looks:
-# 1st) in the same directory than the file that does "import tktable"
+# 1st) in the same directory than the file that does "import ..."
 # 2nd) in an evironment variable named "PYTHONPATH" if it exists
 # 3rd) in the "installation-dependent default"
 
