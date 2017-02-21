@@ -263,6 +263,9 @@ print(name[:-3] + "=" + name[:3])	#Rob=Rob
 print(10 <= 50 < 100 > 5)
 
 
+# positional args vs. keyword args
+# *args **kwds
+
 
 # type built in
 
@@ -286,6 +289,13 @@ nameMangeExample=NameMangle()
 
 
 # descriptor protocol
+
+# A descriptor defines (lets you override) the default behavior when an attribute of an object is looked up.
+
+# __get__(self, instance, owner)
+# __set__(self, instance, value)
+# __delete__(self, instance)
+# If any of those methods are defined for an object, it is said to be a descriptor.
 
 # properties (provide a built-in descriptor type that knows how to link an attribue to *a set of methods*)
 
