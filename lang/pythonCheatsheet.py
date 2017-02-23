@@ -634,23 +634,35 @@ print(a, b, c)
 # threading, GIL and multiprocessing
 
 # alternative to visitor pattern of OO-strong langs, with python you can
-# pull out loop body as a function (trivial)
-# pull out the loop iteration logic with generators
-# pull out setup and teardown with context managers
-# TODO: explain with code example
+# - pull out loop body as a function (trivial)
+# - pull out the loop iteration logic with generators
+# - pull out setup and teardown with context managers
 
 
 # context managers
-# c++ has Resource Acquisition Is Initialization (RAII)
 
 class SomeContexto(object):
-	def __enter__(self):
+	someAttrib = 1
+
+	def __init__(self):
+		print("is called once, when obj is initialized")
+		pass
+
+	def __enter__(self):	# called each time, when entering context with "with"
+		self.anotherAttrib = 2
 		print("entering da zone")
+		return self 	# don't forget to do this! can't be done in __init__
+
 	def __exit__(self, exception_type, exception_value, exception_traceback):
 		print("leaving da zone")
 
-with SomeContexto():
-	print("in da zone!")
+someContexto = SomeContexto()
+
+with someContexto as contexto:
+	print("in da zone!", contexto.someAttrib, contexto.anotherAttrib)
+
+with someContexto as contexto:
+	print("in da zone again, no __init__ this time!")
 
 
 # python versions and ecosystem/packagemanager
