@@ -5,9 +5,11 @@ input.set("B", Array([0.3001,"i"], [0.01,"j"], [9.3,"kx"]))
 input.set("C", Array([1000.7,"l"], [9.3,"m"], [9.2999,"n"]))
 
 let output = new Set()
+
+// forEach can destructure map, for/of can't.
 input.forEach( (v, k) => {
 	let x = v.filter( (el) => el[0]>=0.3 && el[0]<9.3 );
-	x.forEach( (e) => output.add({k:e[1]}) );	//TODO: how do i get k in there?
+	for (let e of x) {output.add([k, e[1]])}
 });
 
-output.forEach( (e) => {console.log(e)} );
+for (let e of output) {console.log(e)}
