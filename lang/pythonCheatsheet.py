@@ -245,6 +245,10 @@ print(filter(lambda x: x%2!=0, lst))	#[1, 3, 5]
 # guido says: filter(P, S) is almost always written clearer as [x for x in S if P(x)]
 # so, instead of filter, better use list comprehension with a conditional expression
 
+# filter a map
+for a in filter( lambda e: e[0]=="Beer", aDictionary.items()):
+	print(a[1], type(a))	# 'Bofferding' <class 'tuple'>
+
 
 # ifilter/imap/izip etc
 
