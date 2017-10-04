@@ -1,10 +1,48 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 # python has nice language features.
 # here you find concise examples for a lot of them.
 # make shure to know the "zen of python"
 
+
+# python is strongly typed.
+# sometimes you need to explicitly cast, sometimes it's done implicitly 
+# for you (duck typing), especially regarding numeric types.
+#
+# types available:
+#
+# Numeric types:
+#     int: Integers; equivalent to C longs in Python 2.x, non-limited length in Python 3.x (immutable)
+#     long: Long integers of non-limited length; exists only in Python 2.x (immutable)
+#     float: Floating-Point numbers, equivalent to C doubles (immutable)
+#     complex: Complex Numbers (immutable)
+# Sequences:
+#     str: String; (immutable); represented as a sequence of 8-bit characters in Python 2.x, but as a sequence of Unicode characters (in the range of U+0000 - U+10FFFF) in Python 3.x
+#     bytes: (immutable); a sequence of integers in the range of 0-255; only available in Python 3.x
+#     byte array: like bytes, but mutable; only available in Python 3.x
+#     list (mutable)
+#     tuple (immutable)
+# Sets:
+#     set: (mutable) an unordered collection of unique objects; available as a standard type since Python 2.6
+#     frozen set: like set, but immutable; available as a standard type since Python 2.6
+# Mappings:
+#     dict: (mutable) Python dictionaries, also called hashmaps or associative arrays
+
+
+# Every object has an identity (address in ram), a type and a value.
+# "is" on objects checks equality of identity.
+# == checks equality of value.
+# id() returns the identity.
+someObject = [13]
+someObject2 = [13]
+print(someObject is someObject2, id(someObject), id(someObject2))    #false
+print(someObject == someObject2)    #true
+
+# in integral data types "is" is equal to "=="
+someIntegralDatatypeVariable = 13
+someIntegralDatatypeVariable2 = 13
+print(someIntegralDatatypeVariable is someIntegralDatatypeVariable2, id(someIntegralDatatypeVariable), id(someIntegralDatatypeVariable2))    #true
 
 
 # collections
@@ -378,16 +416,18 @@ namedVarargF(argone=1, another="two")	# prints "another two argone 1"
 # old style classes vs. new style classes
 #
 # <= python 2.1 has only old style classes
-# python3 has only new style classes (no matter if you subclass from object or not; although you should)
+# in between it's "class X()" for old style, "class X(object)" for new style
+# python3 has only new style classes (no matter if you subclass from object or not; although you should do that.)
 #
-# "class x()"
-# old style: type(x) is always <type 'instance'>, x.__class__ designates the class
-# new style: type(x) == x.__class__
+# python3:
+# old style: type(X) is always <type 'instance'>, X.__class__ designates the class (type is classobj)
+# new style: type(X) == X.__class__
 #
 # new style classes:
 # - unify the concepts of class and type
 # - provide a unified object model with a full meta-model
 # - bring the ability, to change classes and objects definitions at run time via __new__ and __metaclass__
+# - introduce super(), which doesn't work when old-style is involved
 
 
 # meta programming

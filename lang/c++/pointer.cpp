@@ -28,7 +28,7 @@ weak_ptr<X> sharedAndWeakPtrExample()
 	shared_ptr<X> a_third_shared_pt = a_shared_pt; // refcount +1
 	cout << a_shared_pt.use_count();	// 3
 
-	weak_ptr<X> a_weak_pt = a_shared_pt;	// refcount +0
+	weak_ptr<X> a_weak_pt = a_shared_pt;	// refcount +0. a shared ptr doesn't increase ref-count.
 	cout << a_shared_pt.use_count();	// 3
 	cout << a_weak_pt.use_count();	// 3
 	return a_weak_pt;
