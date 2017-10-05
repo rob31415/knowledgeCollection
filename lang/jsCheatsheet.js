@@ -443,6 +443,47 @@ function f (x, y) {
 f(1, 2, "hello", true, 7) === 9;
 
 
+// namespacing
+
+// declaring dependencies
+
+// private, privileged, revealing private
+
+// module pattern
+
+// sandbox
+
+// object constants
+
+// static methods public and private
+
+// chaining, method()-method
+
+
+
+// inheritance
+
+// classical
+
+function Parent(name) {
+    this.name = name || "noname";   // if prop doesn't exist
+}
+
+Parent.prototype.say = function() {
+    return this.name;
+}
+
+function Child(name) {}
+
+function inherit(C, P) {
+    C.prototype = new P();
+}
+
+inherit(Child, Parent);
+
+var kid = new Child();
+console.log("inheritance classical: " + kid.say());
+
 /*
 Extended Parameter Handling
 
