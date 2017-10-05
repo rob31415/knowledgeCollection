@@ -1,10 +1,48 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 # python has nice language features.
 # here you find concise examples for a lot of them.
 # make shure to know the "zen of python"
 
+
+# python is strongly typed.
+# sometimes you need to explicitly cast, sometimes it's done implicitly 
+# for you (duck typing), especially regarding numeric types.
+#
+# types available:
+#
+# Numeric types:
+#     int: Integers; equivalent to C longs in Python 2.x, non-limited length in Python 3.x (immutable)
+#     long: Long integers of non-limited length; exists only in Python 2.x (immutable)
+#     float: Floating-Point numbers, equivalent to C doubles (immutable)
+#     complex: Complex Numbers (immutable)
+# Sequences:
+#     str: String; (immutable); represented as a sequence of 8-bit characters in Python 2.x, but as a sequence of Unicode characters (in the range of U+0000 - U+10FFFF) in Python 3.x
+#     bytes: (immutable); a sequence of integers in the range of 0-255; only available in Python 3.x
+#     byte array: like bytes, but mutable; only available in Python 3.x
+#     list (mutable)
+#     tuple (immutable)
+# Sets:
+#     set: (mutable) an unordered collection of unique objects; available as a standard type since Python 2.6
+#     frozen set: like set, but immutable; available as a standard type since Python 2.6
+# Mappings:
+#     dict: (mutable) Python dictionaries, also called hashmaps or associative arrays
+
+
+# Every object has an identity (address in ram), a type and a value.
+# "is" on objects checks equality of identity.
+# == checks equality of value.
+# id() returns the identity.
+someObject = [13]
+someObject2 = [13]
+print(someObject is someObject2, id(someObject), id(someObject2))    #false
+print(someObject == someObject2)    #true
+
+# in integral data types "is" is equal to "=="
+someIntegralDatatypeVariable = 13
+someIntegralDatatypeVariable2 = 13
+print(someIntegralDatatypeVariable is someIntegralDatatypeVariable2, id(someIntegralDatatypeVariable), id(someIntegralDatatypeVariable2))    #true
 
 
 # collections
@@ -80,6 +118,15 @@ for e in aList:		#iteration can be...
 
 # but comprehensions really are for creating a new collection from a given collection
 x = [doSomething(e) for e in aList]
+
+
+# tip:
+# you have: list of tuples 
+# you want: list of 1st element of every tuple
+# this is done with list comprehension:
+# [element[0] for element in listOfTuples]
+
+
 
 # btw: pythons for is like foreach in javascript/C#. it loops over collections using the iterator protocol.
 
@@ -236,6 +283,10 @@ print(filter(lambda x: x%2!=0, lst))	#[1, 3, 5]
 # guido says: filter(P, S) is almost always written clearer as [x for x in S if P(x)]
 # so, instead of filter, better use list comprehension with a conditional expression
 
+# filter a map
+for a in filter( lambda e: e[0]=="Beer", aDictionary.items()):
+	print(a[1], type(a))	# 'Bofferding' <class 'tuple'>
+
 
 # ifilter/imap/izip etc
 
@@ -254,6 +305,9 @@ print(name[:-3] + "=" + name[:3])	#Rob=Rob
 print(10 <= 50 < 100 > 5)
 
 
+# positional args vs. keyword args
+# *args **kwds
+
 
 # type built in
 
@@ -268,7 +322,43 @@ print(type([]))	#list
 # ordererd / unordered collections
 
 
-# properties
+# name mangling: "__" prefix makes python interpreter rename the attribute
+
+class NameMangle(object):
+	__secret=1
+nameMangeExample=NameMangle()
+#print(nameMangeExample.__secret)	# AttributeError: 'NameMangle' object has no attribute '__secret'
+
+
+# descriptor protocol
+
+# A descriptor defines (lets you override) the default behavior when an attribute of an object is looked up.
+
+# __get__(self, instance, owner)
+# __set__(self, instance, value)
+# __delete__(self, instance)
+# If any of those methods are defined for an object, it is said to be a descriptor.
+
+# properties (provide a built-in descriptor type that knows how to link an attribue to *a set of methods*)
+
+class Properties(object):
+	def __init__(self):		#constructor
+		self._my_secret = 1111
+	def _iGet(self):
+		return self._my_secret
+	def _iSet(self, value):
+		self._my_secret = value
+	def _iDelete(self):
+		print("nah")
+	myThing = property(_iGet, _iSet, _iDelete, "some docstring")
+properties = Properties()
+print(properties.myThing)	# 1111
+properties.myThing = 2222
+print(properties.myThing)   # 2222
+del properties.myThing	# nah
+#help(properties)  makes shell defined reader show
+
+# property shortcut
 
 class Props(object):
 	_x = 0
@@ -322,11 +412,35 @@ def namedVarargF(**args):
 namedVarargF(argone=1, another="two")	# prints "another two argone 1"
 
 
+
 # old style classes vs. new style classes
+#
+# <= python 2.1 has only old style classes
+# in between it's "class X()" for old style, "class X(object)" for new style
+# python3 has only new style classes (no matter if you subclass from object or not; although you should do that.)
+#
+# python3:
+# old style: type(X) is always <type 'instance'>, X.__class__ designates the class (type is classobj)
+# new style: type(X) == X.__class__
+#
+# new style classes:
+# - unify the concepts of class and type
+# - provide a unified object model with a full meta-model
+# - bring the ability, to change classes and objects definitions at run time via __new__ and __metaclass__
+# - introduce super(), which doesn't work when old-style is involved
+
+
+# meta programming
+
+
+# __new__ vs __init__
 
 # https://www.python.org/download/releases/2.3/mro/
 
 # diamond inheritance and super != parent
+
+# method resolution order (C3 algo)
+
 
 
 # __call__ able objects
@@ -339,7 +453,7 @@ aCallableObject = aCallable()
 aCallableObject()	# aCallable.__call__()
 
 
-# decorator
+# function decorator
 # modifies functions by passing them as argument to another function
 
 class aDecorator:
@@ -351,8 +465,16 @@ class aDecorator:
 def someDecoratedFunction():
 	print("bla")
 
+
+# class decorator
+
+
+
 # decorators can be used to seperate administrative logic from business logic.
 # e.g.: looking up an url (business log.) and memoizing/caching it with a dict (administrative logic).
+
+# instantiating descriptors and using class decorators as an alternate to mixins
+
 
 # closure
 
@@ -403,6 +525,41 @@ for b in genexp:
 
 # coroutines
 
+# they're different from subroutines (ordinary fct. calls), in that there is no 
+# coordinating instance (a superfunction calling many subroutines).
+# evaluation is lazy - similar to generators, they contain a loop and every single iteration is triggered from the outside.
+# coroutines are composed together to form a pipeline.
+
+def coroutineMatch(pattern):	# a consumer
+	try:
+		while True:
+			s = (yield)
+			if pattern in s:
+				print(s)
+	except GeneratorExit:
+		print("coroutineMatch closing")
+
+matcher = coroutineMatch("a")
+matcher.__next__()		# let execution reach (yield). quasi inits the coroutine.
+matcher.send("abc")		# "abc"
+matcher.send("def")		# no output
+matcher.close()			# "coroutineMatch closing"
+
+# compose coroutines
+
+def coroutineRead(text, nextCoroutine):	# a producer
+	nextCoroutine.__next__()
+	for line in text.split():
+		nextCoroutine.send(line)
+	nextCoroutine.close()
+
+# give the consumer to the producer
+reader = coroutineRead("a b c aa b c dea", coroutineMatch("a"))	# "a" "aa" "dea"
+
+# producer: has a send() call only.
+# filter: has both, (yield) and a send() call. can delete/modify data that's passing through.
+# consumer: has a (yield) call only.
+
 
 # grouping
 # create a dict from a list, where the key is what's being grouped by and the value is a list of elements from the source.
@@ -427,6 +584,8 @@ for el in toBeProcessed:
 print(grouped)
 # if grouped were a normal dict, this is equivalent:
 # grouped.setdefault(key, []).append(el)
+
+# iterator protocol
 
 # itertools groupby
 
@@ -519,25 +678,41 @@ print(a, b, c)
 # threading, GIL and multiprocessing
 
 # alternative to visitor pattern of OO-strong langs, with python you can
-# pull out loop body as a function (trivial)
-# pull out the loop iteration logic with generators
-# pull out setup and teardown with context managers
-# TODO: explain with code example
+# - pull out loop body as a function (trivial)
+# - pull out the loop iteration logic with generators
+# - pull out setup and teardown with context managers
+
 
 # context managers
-# c++ has Resource Acquisition Is Initialization (RAII)
 
-#import contextlib
-#@contextlib.contextmanager
-#def aMgr
+class SomeContexto(object):
+	someAttrib = 1
 
-# dis.dis(x)
+	def __init__(self):
+		print("is called once, when obj is initialized")
+		pass
+
+	def __enter__(self):	# called each time, when entering context with "with"
+		self.anotherAttrib = 2
+		print("entering da zone")
+		return self 	# don't forget to do this! can't be done in __init__
+
+	def __exit__(self, exception_type, exception_value, exception_traceback):
+		print("leaving da zone")
+
+someContexto = SomeContexto()
+
+with someContexto as contexto:
+	print("in da zone!", contexto.someAttrib, contexto.anotherAttrib)
+
+with someContexto as contexto:
+	print("in da zone again, no __init__ this time!")
 
 
 # python versions and ecosystem/packagemanager
 
 # import looks:
-# 1st) in the same directory than the file that does "import tktable"
+# 1st) in the same directory than the file that does "import ..."
 # 2nd) in an evironment variable named "PYTHONPATH" if it exists
 # 3rd) in the "installation-dependent default"
 

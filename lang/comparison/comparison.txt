@@ -1,0 +1,20 @@
+
+Problem description:
+
+- Create & Populate a (slightly complex) Datastructure 
+- Retrieve certain Elements from it
+- Create new Datastructure from retrieved Elements
+
+DatastructureInput=Map; Key=String; Value=List of 2-Tupel; every tuple contains float and string.
+{	
+  "A": [(2.3,"f"), (0.1,"g"), (0.3,"h")],
+  "B": [(0.3001,"i"), (0.01,"j"), (9.3,"kx")],
+  "C": [(1000.7,"l"), (9.3,"m"), (9.2999,"n")]
+}
+
+DatastructureOutput=Set of tuples; every tuple contains map key and letter(s) from tuple; where tuple-float >=0.3 and <9.3
+
+
+Task:
+
+What does the code look like in: C# 6, C++ 14, Python 3, ES6, Java 8, Scala 2.12, Clojure 1.8, PHP

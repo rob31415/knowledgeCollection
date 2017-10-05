@@ -1,0 +1,14 @@
+
+uncle bob:
+sequence
+selection
+iteration
+ 
+martin odersky:
+compose
+match
+group
+recurse
+abstract
+aggregate
+mutate
